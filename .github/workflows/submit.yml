@@ -1,0 +1,27 @@
+name: Handle Form Submission
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  write_to_file:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Write to file
+        run: |
+          echo "Username: ${{ github.event.inputs.username }}" >> submissions.txt
+          echo "Password: ${{ github.event.inputs.password }}" >> submissions.txt
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "your-email@example.com"
+          git config --local user.name "Your Name"
+          git add submissions.txt
+          git commit -m "New submission"
+          git push
